@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2017 huxizhijian
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:padding="@dimen/padding_normal"
+        android:textColor="@color/text_primary_dark"
+        android:textSize="@dimen/large_text_size"/>
+
+    <me.gujun.android.taggroup.TagGroup
+        android:id="@+id/tag_group"
+        style="@style/TagGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        app:atg_borderColor="@color/colorPrimary"
+        app:atg_checkedBackgroundColor="@color/cardview_light_background"
+        app:atg_textColor="@color/colorPrimary"
+        app:atg_textSize="15sp"
+        app:atg_verticalSpacing="4dp"
+        app:paddingEnd="4dp"
+        app:paddingStart="4dp"/>
+
+</LinearLayout>

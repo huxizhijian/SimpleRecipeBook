@@ -1,0 +1,69 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Search">
+        <item name="colorPrimaryDark">#bdbdbd</item>
+    </style>
+
+    <style name="Recipe" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/background_light</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/background_super_dark</item>
+        <item name="android:statusBarColor">@color/background_super_dark</item>
+        <item name="android:textColorHint">@color/hint_disabled_dark</item>
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementsUseOverlay">false</item>
+    </style>
+
+    <style name="Recipe.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="Recipe.Translucent">
+        <item name="android:windowBackground">@color/scrim</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="Recipe.Translucent.Recipe">
+        <item name="android:colorPrimary">@color/dribbble</item>
+        <item name="android:colorAccent">@color/dribbble</item>
+        <item name="android:statusBarColor">@color/dribbble_super_dark</item>
+        <item name="android:navigationBarColor">@color/dribbble_super_dark</item>
+        <item name="android:colorControlActivated">?android:colorAccent</item>
+        <item name="android:windowAllowReturnTransitionOverlap">false</item>
+    </style>
+
+    <style name="Recipe.Translucent.Recipe.Detail">
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/dribbble_shot_shared_enter
+        </item>
+        <item name="android:windowSharedElementReturnTransition">
+            @transition/dribbble_shot_shared_return
+        </item>
+        <item name="android:windowEnterTransition">@transition/dribbble_shot_enter</item>
+        <item name="android:windowReturnTransition">@transition/dribbble_shot_return</item>
+    </style>
+
+
+</resources>

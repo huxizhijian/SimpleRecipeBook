@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">简单食谱</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recipe_category">食谱分类</string>
+    <string name="recipe_stars">食谱收藏</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="app_name_with_version">简单食谱 v1.0</string>
+    <string name="app_author">反馈：huxizhijian@yeah.net</string>
+    <string name="share">分享</string>
+    <string name="setting">设置</string>
+    <string name="other">其他</string>
+    <string name="search">搜索</string>
+    <string name="navigation_item">navigation_select</string>
+    <string name="random_recommend">随机推荐</string>
+    <string name="title_activity_recipe_detail">菜单详情</string>
+    <string name="transition_shot" translatable="false">shot</string>
+    <string name="transition_shot_title" translatable="false">shot_title</string>
+    <string name="transition_shot_background" translatable="false">shot_background</string>
+
+    <string name="scroll_fab_behavior">org.huxizhijian.simplerecipebook.widget.behavior.FabBehavior</string>
+    <string name="recipe_result">标签列表</string>
+    <string name="list_empty">没有数据</string>
+</resources>
