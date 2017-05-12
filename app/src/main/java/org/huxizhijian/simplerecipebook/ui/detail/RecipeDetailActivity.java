@@ -3,6 +3,7 @@ package org.huxizhijian.simplerecipebook.ui.detail;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -29,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.huxizhijian.sdk.util.GlideUtils;
 import org.huxizhijian.sdk.util.LogUtils;
+import org.huxizhijian.sdk.util.NetworkUtils;
 import org.huxizhijian.sdk.util.adapter.recycleradapter.CommonAdapter;
 import org.huxizhijian.sdk.util.adapter.recycleradapter.base.ViewHolder;
 import org.huxizhijian.sdk.util.adapter.recycleradapter.wrapper.HeaderAndFooterWrapper;
@@ -79,6 +82,7 @@ public class RecipeDetailActivity extends BaseActivity {
     FABToggle mFabHeart;
     @BindView(R.id.frame_layout)
     ElasticDragDismissFrameLayout mFrameLayout;
+    private ImageView mNoConnection;
 
     //header item in recyclerview
     private View mHeaderView;
@@ -116,7 +120,6 @@ public class RecipeDetailActivity extends BaseActivity {
     private QueryBean mQueryBean;
     private String mImgUrl;
     private String mTitle;
-
     @Override
     protected void initWidget() {
         //左上返回按钮事件绑定
@@ -216,6 +219,30 @@ public class RecipeDetailActivity extends BaseActivity {
                 @Override
                 public void onFailure(Throwable throwable) {
                     throwable.printStackTrace();
+                    if (!NetworkUtils.isConnected()) {
+                        //显示没有网络提示
+                        if (mNoConnection == null) {
+                            ViewStub viewStub = (ViewStub) findViewById(R.id.view_stub);
+                            mNoConnection = (ImageView) viewStub.inflate();
+                        }
+                        mNoConnection.setVisibility(View.VISIBLE);
+                        final AnimatedVectorDrawable avd =
+                                (AnimatedVectorDrawable) getDrawable(R.drawable.avd_no_connection);
+                        if (mNoConnection != null && avd != null) {
+                            mNoConnection.setImageDrawable(avd);
+                            avd.start();
+                        }
+                        mNoConnection.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (TextUtils.isEmpty(mMenuId.trim())) {
+                                    mRecipeIdPresenter.getDetails(id);
+                                } else {
+                                    mRecipeIdPresenter.getDetails(mMenuId);
+                                }
+                            }
+                        });
+                    }
                 }
             });
             if (TextUtils.isEmpty(mMenuId.trim())) {

@@ -1,22 +1,23 @@
 package org.huxizhijian.simplerecipebook.ui.main.fragment;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.v4.view.ViewPager;
-import android.util.SparseArray;
 import android.view.View;
+import android.view.ViewStub;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import org.huxizhijian.sdk.util.LogUtils;
+import org.huxizhijian.sdk.util.NetworkUtils;
 import org.huxizhijian.simplerecipebook.R;
 import org.huxizhijian.simplerecipebook.base.BaseFragment;
 import org.huxizhijian.simplerecipebook.bean.query.QueryBean;
 import org.huxizhijian.simplerecipebook.ui.detail.RecipeIdContract;
 import org.huxizhijian.simplerecipebook.ui.detail.RecipeIdPresenter;
+import org.huxizhijian.simplerecipebook.ui.main.fragment.adapter.CardPagerAdapter;
 import org.huxizhijian.simplerecipebook.util.Constant;
-import org.huxizhijian.simplerecipebook.widget.CustPagerTransformer;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,56 +29,49 @@ public class RandomFragment extends BaseFragment implements RecipeIdContract.Vie
 
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
-    private List<PagerItemFragment> mFragments = new ArrayList<>();
-    private SparseArray<QueryBean> mBeanSparseArray = new SparseArray<>();
-    private HashSet<Integer> mMissionSet = new HashSet<>();
-    private QueryBean mHoldQueryBean;
-
+    private List<QueryBean> mQueryBeanList;
     private RecipeIdPresenter mRecipeIdPresenter;
+    private CardPagerAdapter mAdapter;
 
-    @Override
-    protected void initWidget(View root) {
-        // 1. viewPager添加parallax效果，使用PageTransformer就足够了
-        mViewPager.setPageTransformer(false, new CustPagerTransformer(getActivity()));
-    }
+    private static final int PAGE_SIZE = 20;
+    private int mPage = 0;
+
+
+    private ImageView mNoConnection;
 
     @Override
     public void initData() {
-        // 2. viewPager添加adapter
-        for (int i = 0; i < 10; i++) {
-            // 预先准备10个fragment
-            mFragments.add(new PagerItemFragment());
-        }
-
-        //开始获取
-        addMission(666 / 2);
+        mQueryBeanList = new ArrayList<>();
         getRandomRecipe();
-
-        mRecipeIdPresenter = new RecipeIdPresenter(this);
     }
 
-    private void addMission(int position) {
-        if (mBeanSparseArray.get(position) == null) {
-            mMissionSet.add(position);
-        }
-        if (mBeanSparseArray.get(position + 1) == null) {
-            mMissionSet.add(position + 1);
-        }
-        if (mBeanSparseArray.get(position - 1) == null) {
-            mMissionSet.add(position - 1);
-        }
-        if (mBeanSparseArray.get(position + 2) == null) {
-            mMissionSet.add(position + 2);
-        }
-        if (mBeanSparseArray.get(position - 2) == null) {
-            mMissionSet.add(position - 2);
+    /**
+     * 数据获取完成，加载或者更新viewpager
+     */
+    private void updateViewPage() {
+        mProgressBar.setVisibility(View.GONE);
+        if (mAdapter == null) {
+            mAdapter = new CardPagerAdapter(getActivity(), mQueryBeanList);
+            mViewPager.setAdapter(mAdapter);
+            mViewPager.setOffscreenPageLimit(3);
+        } else {
+            mAdapter.updateData(mQueryBeanList);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_viewpager;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRecipeIdPresenter.clear();
     }
 
     private String getIdString(int id) {
@@ -106,68 +100,37 @@ public class RandomFragment extends BaseFragment implements RecipeIdContract.Vie
 
     @Override
     public void onSuccess(QueryBean queryBean) {
-        if (mMissionSet.iterator().hasNext()) {
-            Integer position = mMissionSet.iterator().next();
-            mMissionSet.remove(position);
-            mBeanSparseArray.put(position, queryBean);
-            if (!mMissionSet.isEmpty()) {
-                getRandomRecipe();
-            } else {
-                if (mViewPager.getAdapter() == null) {
-                    initViewPager();
-                }
-            }
+        mQueryBeanList.add(queryBean);
+        if (mQueryBeanList.size() == (mPage + 1) * PAGE_SIZE) {
+            updateViewPage();
         } else {
-            mHoldQueryBean = queryBean;
+            getRandomRecipe();
         }
-    }
-
-    private void initViewPager() {
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(getActivity().getSupportFragmentManager()) {
-
-            @Override
-            public Fragment getItem(int position) {
-                //取出一个fragment
-                PagerItemFragment fragment = mFragments.get(position % 10);
-                fragment.bindView(mBeanSparseArray.get(position));
-                return fragment;
-            }
-
-            @Override
-            public int getCount() {
-                return 666;
-            }
-        });
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                addMission(position);
-                getRandomRecipe();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        mViewPager.setCurrentItem(mViewPager.getAdapter().getCount() / 2, false);
     }
 
     @Override
     public void onFailure(Throwable throwable) {
         throwable.printStackTrace();
+        if (!NetworkUtils.isConnected()) {
+            //显示没有网络提示
+            if (mNoConnection == null) {
+                ViewStub viewStub = (ViewStub) mRoot.findViewById(R.id.view_stub);
+                mNoConnection = (ImageView) viewStub.inflate();
+            }
+            mNoConnection.setVisibility(View.VISIBLE);
+            final AnimatedVectorDrawable avd =
+                    (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.avd_no_connection);
+            if (mNoConnection != null && avd != null) {
+                mNoConnection.setImageDrawable(avd);
+                avd.start();
+            }
+            mNoConnection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getRandomRecipe();
+                }
+            });
+        }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mRecipeIdPresenter.clear();
-    }
 }

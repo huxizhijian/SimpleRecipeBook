@@ -6,6 +6,13 @@
     android:focusable="true"
     tools:context="org.huxizhijian.simplerecipebook.ui.main.fragment.category.CategoryFragment">
 
+    <ViewStub
+        android:id="@+id/view_stub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/no_connection"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

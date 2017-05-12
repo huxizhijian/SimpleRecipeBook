@@ -79,6 +79,14 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <ViewStub
+        android:id="@+id/view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/no_connection"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
     <org.huxizhijian.simplerecipebook.widget.FABToggle
         android:id="@+id/fab_heart"
         android:layout_width="@dimen/fab_size"

@@ -38,6 +38,7 @@
         android:padding="@dimen/padding_normal"
         app:atg_borderColor="@color/colorPrimary"
         app:atg_checkedBackgroundColor="@color/cardview_light_background"
+        app:atg_pressedBackgroundColor="@color/cardview_light_background"
         app:atg_textColor="@color/colorPrimary"
         app:atg_textSize="15sp"
         app:atg_verticalSpacing="4dp"

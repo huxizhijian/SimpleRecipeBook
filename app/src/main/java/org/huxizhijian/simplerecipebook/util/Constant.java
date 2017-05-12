@@ -21,4 +21,6 @@ public class Constant {
 
     public static final int RECIPE_COUNT = 17758; //数据库菜谱总数
 
+    public static final String BUGLY_APP_ID = "7a4755535c";
+
 }

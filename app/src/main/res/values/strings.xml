@@ -24,4 +24,5 @@
     <string name="scroll_fab_behavior">org.huxizhijian.simplerecipebook.widget.behavior.FabBehavior</string>
     <string name="recipe_result">标签列表</string>
     <string name="list_empty">没有数据</string>
+    <string name="view_recipe">查看食谱</string>
 </resources>

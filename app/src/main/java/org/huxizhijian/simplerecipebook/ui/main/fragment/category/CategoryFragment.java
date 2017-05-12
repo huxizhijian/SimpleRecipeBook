@@ -2,13 +2,16 @@ package org.huxizhijian.simplerecipebook.ui.main.fragment.category;
 
 
 import android.content.Intent;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewStub;
+import android.widget.ImageView;
 
 import org.huxizhijian.sdk.util.LogUtils;
+import org.huxizhijian.sdk.util.NetworkUtils;
 import org.huxizhijian.sdk.util.adapter.recycleradapter.CommonAdapter;
 import org.huxizhijian.sdk.util.adapter.recycleradapter.base.ViewHolder;
 import org.huxizhijian.simplerecipebook.CookRecipeApp;
@@ -32,6 +35,7 @@ public class CategoryFragment extends BaseFragment implements CategoryContract.V
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    private ImageView mNoConnection;
 
     private CategoryBean mCategoryBean;
 
@@ -41,10 +45,6 @@ public class CategoryFragment extends BaseFragment implements CategoryContract.V
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_recycler_view;
-    }
-
-    @Override
-    protected void initWidget(View root) {
     }
 
     @Override
@@ -94,7 +94,27 @@ public class CategoryFragment extends BaseFragment implements CategoryContract.V
     @Override
     public void onFailure(Throwable throwable) {
         throwable.printStackTrace();
-        Toast.makeText(mContext, "错误", Toast.LENGTH_SHORT).show();
+        if (!NetworkUtils.isConnected()) {
+            //显示没有网络提示
+            if (mNoConnection == null) {
+                ViewStub viewStub = (ViewStub) mRoot.findViewById(R.id.view_stub);
+                mNoConnection = (ImageView) viewStub.inflate();
+            }
+            mNoConnection.setVisibility(View.VISIBLE);
+            final AnimatedVectorDrawable avd =
+                    (AnimatedVectorDrawable) mContext.getDrawable(R.drawable.avd_no_connection);
+            if (mNoConnection != null && avd != null) {
+                mNoConnection.setImageDrawable(avd);
+                avd.start();
+            }
+            mNoConnection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //申请分类数据
+                    initData();
+                }
+            });
+        }
     }
 
 }

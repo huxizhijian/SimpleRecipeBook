@@ -65,5 +65,9 @@
         <item name="android:windowReturnTransition">@transition/dribbble_shot_return</item>
     </style>
 
+    <style name="ButtonStyle">
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
+    </style>
+
 
 </resources>

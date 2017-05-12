@@ -103,12 +103,12 @@ public class MainActivity extends BaseActivity
                 mNavItem = R.id.nav_random;
                 showFragment();
                 break;
-            case R.id.nav_share:
+            /*case R.id.nav_share:
                 //分享
                 break;
             case R.id.nav_setting:
                 //设置
-                break;
+                break;*/
         }
 
         mDrawer.closeDrawer(GravityCompat.START);

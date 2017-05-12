@@ -2,6 +2,7 @@ package org.huxizhijian.simplerecipebook.ui.showrecipelist;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.design.widget.FloatingActionButton;
@@ -150,6 +151,8 @@ public class RecipeListActivity extends BaseActivity implements RecipeListContra
                 mAlertDialog.show();
             }
         });
+        mFabJump.setBackgroundTintList(ColorStateList
+                .valueOf(getResources().getColor(R.color.grey_300)));
     }
 
     @Override
@@ -197,6 +200,9 @@ public class RecipeListActivity extends BaseActivity implements RecipeListContra
                 } else {
                     mRecipeList.addAll(searchBean.getResult().getList());
                 }
+                //点亮FAB
+                mFabJump.setBackgroundTintList(ColorStateList
+                        .valueOf(getResources().getColor(R.color.colorAccent)));
                 //更新或者初始化recyclerview
                 updateRecycleView();
             }
