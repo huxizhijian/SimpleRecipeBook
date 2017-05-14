@@ -3,12 +3,9 @@ package org.huxizhijian.simplerecipebook.ui.search;
 import android.animation.Animator;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
@@ -34,6 +31,7 @@ import org.huxizhijian.sdk.util.adapter.recycleradapter.CommonAdapter;
 import org.huxizhijian.sdk.util.adapter.recycleradapter.base.ViewHolder;
 import org.huxizhijian.sdk.util.adapter.recycleradapter.wrapper.EmptyWrapper;
 import org.huxizhijian.simplerecipebook.R;
+import org.huxizhijian.simplerecipebook.base.BaseActivity;
 import org.huxizhijian.simplerecipebook.bean.search.RecipeBean;
 import org.huxizhijian.simplerecipebook.bean.search.SearchBean;
 import org.huxizhijian.simplerecipebook.greendao.db.DBHelper;
@@ -46,9 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class SearchActivity extends AppCompatActivity implements SearchContract.View {
+public class SearchActivity extends BaseActivity implements SearchContract.View {
 
     /**
      * UI
@@ -90,17 +87,6 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     private LRecyclerViewAdapter mAdapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(getContentView());
-        mRelativeLayout = (RelativeLayout) findViewById(R.id.parent_view);
-        setupEnterAnimations();
-        ButterKnife.bind(this);
-        initWidget();
-        initData();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         mSearchPresenter.clear();
@@ -111,6 +97,8 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     protected void initWidget() {
+        mRelativeLayout = (RelativeLayout) findViewById(R.id.parent_view);
+        setupEnterAnimations();
         if (mSearchHistoryDao == null) {
             mSearchHistoryDao = DBHelper.getDaoSession(SearchActivity.this)
                     .getSearchHistoryDao();
@@ -302,6 +290,9 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         EmptyWrapper emptyWrapper = new EmptyWrapper(adapter);
         emptyWrapper.setEmptyView(R.layout.item_list_empty);
         mAdapter = new LRecyclerViewAdapter(emptyWrapper);
+        if (mSearchResultsList == null) {
+            mSearchResultsList = (LRecyclerView) findViewById(R.id.search_results_list);
+        }
         mSearchResultsList.setAdapter(mAdapter);
     }
 

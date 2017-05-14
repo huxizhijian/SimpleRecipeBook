@@ -111,6 +111,7 @@ public class RandomFragment extends BaseFragment implements RecipeIdContract.Vie
     @Override
     public void onFailure(Throwable throwable) {
         throwable.printStackTrace();
+        mProgressBar.setVisibility(View.GONE);
         if (!NetworkUtils.isConnected()) {
             //显示没有网络提示
             if (mNoConnection == null) {
